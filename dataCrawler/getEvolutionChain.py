@@ -4,6 +4,7 @@ from io import BytesIO
 from PIL import Image
 from common import config
 import os
+import pandas as pd
 class getEvolutionChain:
     def __init__(self):
         self.headers = config.headers
@@ -45,29 +46,54 @@ class getEvolutionChain:
         if tosave[0] not in self.data_dict.keys():
             self.data_dict[tosave[0]] = tosave[1:]
             # save image
-            os.mkdir(self.image_dir+tosave[0])
-            r = self.sess.get(img_src_url)
-            img = Image.open(BytesIO(r.content))
-            img.convert('1')
-            img.save(self.image_dir+tosave[0]+'/normal.png')
+            path = self.image_dir+tosave[0]
+            if not os.path.exists(path):
+                os.mkdir(path)
+                r = self.sess.get(img_src_url)
+                img = Image.open(BytesIO(r.content))
+                img.convert('1')
+                img.save(path+'/normal.png')
         else:
-            self.data_dict[tosave[0]] += ','+tosave[-1]
+            if tosave[-1] != '':
+                if self.data_dict[tosave[0]][-1] == '':
+                    self.data_dict[tosave[0]][-1] += tosave[-1]
+                else:
+                    self.data_dict[tosave[0]][-1] += ',' + tosave[-1]
+
+    def parseSubChain(self, soup, init_head):
+        head = init_head
+        for child in soup.contents[0].children:
+            if child != '\n':
+                try:
+                    if child['class'] == ['infocard']:
+                        pokemon = self.parseInfocard(child)
+                        self.savePokemonPair(head, pokemon)
+                        self.savePokemonPair(pokemon)
+                        head = pokemon
+                # special 292 Shedinja
+                except KeyError:
+                    head = init_head
 
 
     def parseChain(self, soup):
-        stack = []
+        head = None
         for child in soup.children:
             if child != '\n':
-                print(child)
                 if child['class'] == ['infocard']:
                     pokemon = self.parseInfocard(child)
-                    if stack:
-                        head = stack.pop()
+                    if head:
                         self.savePokemonPair(head, pokemon)
-                        stack.append(pokemon)
+                        self.savePokemonPair(pokemon)
+                        head = pokemon
                     else:
                         self.savePokemonPair(pokemon)
-                        stack.append(pokemon)
+                        head = pokemon
+                elif child['class'] == ['infocard-evo-split']:
+                    for grandchild in child.children:
+                        if grandchild['class'] == ['infocard-list-evo']:
+                            self.parseSubChain(grandchild, head)
+
+
 
 
 
@@ -79,13 +105,20 @@ class getEvolutionChain:
             if chain.name == 'div' and chain['class'] == ['infocard-list-evo']:
                 self.parseChain(chain)
         self.sess.close()
+        df = pd.DataFrame(self.data_dict).T
+        df.columns = ['eng_name', 'type1', 'type2', 'evolution']
+        df.to_csv('../data/evolution_chain.csv')
 
     def test(self):
         r = self.sess.get(self.home_url)
         soup = BeautifulSoup(r.text, 'lxml')
         for chain in soup.find('main').children:
             if chain.name == 'div' and chain['class'][0] == 'infocard-list-evo':
-                return chain
+                try:
+                    if chain.contents[5]['class'] == ['infocard-evo-split']:
+                        return chain
+                except:
+                    pass
 
 
 if __name__ == '__main__':
