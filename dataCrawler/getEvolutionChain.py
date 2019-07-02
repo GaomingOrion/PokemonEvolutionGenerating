@@ -2,22 +2,25 @@ import requests
 from bs4 import BeautifulSoup
 from io import BytesIO
 from PIL import Image
-from common import config
 import os
 import pandas as pd
+from common import config
+
 class getEvolutionChain:
     def __init__(self):
         self.headers = config.headers
         self.sess = requests.session()
         self.sess.headers.update(self.headers)
-        self.home_url = 'https://pokemondb.net/evolution'
+        self.evo_url = config.evo_url
+        self.image_dir = config.image_dir
+
         self.data_dict = {}
-        self.image_dir = '../data/image/'
+        # pokemon_index -> [eng_name, type1, type2, evolution_indices]
 
     @staticmethod
-    def parseInfocard(soup):
+    def parseEvoInfocard(soup):
         '''
-        parse one pokemon information
+        parse one pokemon information on the evo_page
         '''
         img_src_url = soup.find('span', class_='img-fixed img-sprite')['data-src']
         eng_name = soup.find('a', class_='ent-name').string
@@ -25,16 +28,21 @@ class getEvolutionChain:
         index = small[0].string[1:]
         type_lst = small[-1].find_all('a')
         type1 = type_lst[0].string
-        if len(type_lst) == 2:
-            type2 = type_lst[1].string
-        else:
-            type2 = None
+        type2 = type_lst[1].string if len(type_lst) == 2 else None
+
         # special form
         if len(small) == 3:
             form = small[1].string
-            index += '-'+form
-            eng_name += '-'+form
+            if index != '744':
+                if form.startswith('Alolan'):
+                    form = 'Alolan'
+                index += '-'+form
+                eng_name += '-'+form
         return index, eng_name,  type1, type2, img_src_url
+
+    @staticmethod
+    def parseDexInfocard(soup):
+        index_tag = 0
 
     def savePokemonPair(self, head, tail=None):
         img_src_url = head[-1]
@@ -66,7 +74,7 @@ class getEvolutionChain:
             if child != '\n':
                 try:
                     if child['class'] == ['infocard']:
-                        pokemon = self.parseInfocard(child)
+                        pokemon = self.parseEvoInfocard(child)
                         self.savePokemonPair(head, pokemon)
                         self.savePokemonPair(pokemon)
                         head = pokemon
@@ -80,7 +88,7 @@ class getEvolutionChain:
         for child in soup.children:
             if child != '\n':
                 if child['class'] == ['infocard']:
-                    pokemon = self.parseInfocard(child)
+                    pokemon = self.parseEvoInfocard(child)
                     if head:
                         self.savePokemonPair(head, pokemon)
                         self.savePokemonPair(pokemon)
@@ -93,24 +101,27 @@ class getEvolutionChain:
                         if grandchild['class'] == ['infocard-list-evo']:
                             self.parseSubChain(grandchild, head)
 
-
-
-
+    def getExtraPokemon(self):
+        '''
+        get pokemons info who are not in evolution chain
+        :return:
+        '''
 
 
     def main(self):
-        r = self.sess.get(self.home_url)
+        r = self.sess.get(self.evo_url)
         soup = BeautifulSoup(r.text, 'lxml')
         for chain in soup.find('main').children:
             if chain.name == 'div' and chain['class'] == ['infocard-list-evo']:
                 self.parseChain(chain)
-        self.sess.close()
-        df = pd.DataFrame(self.data_dict).T
+        df = pd.DataFrame.from_dict(self.data_dict, orient='index')
         df.columns = ['eng_name', 'type1', 'type2', 'evolution']
         df.to_csv('../data/evolution_chain.csv')
 
+        self.sess.close()
+
     def test(self):
-        r = self.sess.get(self.home_url)
+        r = self.sess.get(self.evo_url)
         soup = BeautifulSoup(r.text, 'lxml')
         for chain in soup.find('main').children:
             if chain.name == 'div' and chain['class'][0] == 'infocard-list-evo':
@@ -123,5 +134,5 @@ class getEvolutionChain:
 
 if __name__ == '__main__':
     g = getEvolutionChain()
-    #r = g.test()
-    r = g.main()
+    r = g.test()
+    #r = g.main()

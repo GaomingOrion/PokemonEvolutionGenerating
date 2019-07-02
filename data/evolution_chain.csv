@@ -19,20 +19,20 @@
 018,Pidgeot,Normal,Flying,
 019,Rattata,Normal,,020
 020,Raticate,Normal,,
-019-Alolan Rattata,Rattata-Alolan Rattata,Dark,Normal,020-Alolan Raticate
-020-Alolan Raticate,Raticate-Alolan Raticate,Dark,Normal,
+019-Alolan,Rattata-Alolan,Dark,Normal,020-Alolan
+020-Alolan,Raticate-Alolan,Dark,Normal,
 021,Spearow,Normal,Flying,022
 022,Fearow,Normal,Flying,
 023,Ekans,Poison,,024
 024,Arbok,Poison,,
 172,Pichu,Electric,,025
-025,Pikachu,Electric,,"026,026-Alolan Raichu"
+025,Pikachu,Electric,,"026,026-Alolan"
 026,Raichu,Electric,,
-026-Alolan Raichu,Raichu-Alolan Raichu,Electric,Psychic,
+026-Alolan,Raichu-Alolan,Electric,Psychic,
 027,Sandshrew,Ground,,028
 028,Sandslash,Ground,,
-027-Alolan Sandshrew,Sandshrew-Alolan Sandshrew,Ice,Steel,028-Alolan Sandslash
-028-Alolan Sandslash,Sandslash-Alolan Sandslash,Ice,Steel,
+027-Alolan,Sandshrew-Alolan,Ice,Steel,028-Alolan
+028-Alolan,Sandslash-Alolan,Ice,Steel,
 029,Nidoran♀,Poison,,030
 030,Nidorina,Poison,,031
 031,Nidoqueen,Poison,Ground,
@@ -44,8 +44,8 @@
 036,Clefable,Fairy,,
 037,Vulpix,Fire,,038
 038,Ninetales,Fire,,
-037-Alolan Vulpix,Vulpix-Alolan Vulpix,Ice,,038-Alolan Ninetales
-038-Alolan Ninetales,Ninetales-Alolan Ninetales,Ice,Fairy,
+037-Alolan,Vulpix-Alolan,Ice,,038-Alolan
+038-Alolan,Ninetales-Alolan,Ice,Fairy,
 174,Igglybuff,Normal,Fairy,039
 039,Jigglypuff,Normal,Fairy,040
 040,Wigglytuff,Normal,Fairy,
@@ -62,12 +62,12 @@
 049,Venomoth,Bug,Poison,
 050,Diglett,Ground,,051
 051,Dugtrio,Ground,,
-050-Alolan Diglett,Diglett-Alolan Diglett,Ground,Steel,051-Alolan Dugtrio
-051-Alolan Dugtrio,Dugtrio-Alolan Dugtrio,Ground,Steel,
+050-Alolan,Diglett-Alolan,Ground,Steel,051-Alolan
+051-Alolan,Dugtrio-Alolan,Ground,Steel,
 052,Meowth,Normal,,053
 053,Persian,Normal,,
-052-Alolan Meowth,Meowth-Alolan Meowth,Dark,,053-Alolan Persian
-053-Alolan Persian,Persian-Alolan Persian,Dark,,
+052-Alolan,Meowth-Alolan,Dark,,053-Alolan
+053-Alolan,Persian-Alolan,Dark,,
 054,Psyduck,Water,,055
 055,Golduck,Water,,
 056,Mankey,Fighting,,057
@@ -92,9 +92,9 @@
 074,Geodude,Rock,Ground,075
 075,Graveler,Rock,Ground,076
 076,Golem,Rock,Ground,
-074-Alolan Geodude,Geodude-Alolan Geodude,Rock,Electric,075-Alolan Graveler
-075-Alolan Graveler,Graveler-Alolan Graveler,Rock,Electric,076-Alolan Golem
-076-Alolan Golem,Golem-Alolan Golem,Rock,Electric,
+074-Alolan,Geodude-Alolan,Rock,Electric,075-Alolan
+075-Alolan,Graveler-Alolan,Rock,Electric,076-Alolan
+076-Alolan,Golem-Alolan,Rock,Electric,
 077,Ponyta,Fire,,078
 078,Rapidash,Fire,,
 079,Slowpoke,Water,Psychic,"080,199"
@@ -109,8 +109,8 @@
 087,Dewgong,Water,Ice,
 088,Grimer,Poison,,089
 089,Muk,Poison,,
-088-Alolan Grimer,Grimer-Alolan Grimer,Poison,Dark,089-Alolan Muk
-089-Alolan Muk,Muk-Alolan Muk,Poison,Dark,
+088-Alolan,Grimer-Alolan,Poison,Dark,089-Alolan
+089-Alolan,Muk-Alolan,Poison,Dark,
 090,Shellder,Water,,091
 091,Cloyster,Water,Ice,
 092,Gastly,Ghost,Poison,093
@@ -124,12 +124,12 @@
 099,Kingler,Water,,
 100,Voltorb,Electric,,101
 101,Electrode,Electric,,
-102,Exeggcute,Grass,Psychic,"103,103-Alolan Exeggutor"
+102,Exeggcute,Grass,Psychic,"103,103-Alolan"
 103,Exeggutor,Grass,Psychic,
-103-Alolan Exeggutor,Exeggutor-Alolan Exeggutor,Grass,Dragon,
-104,Cubone,Ground,,"105,105-Alolan Marowak"
+103-Alolan,Exeggutor-Alolan,Grass,Dragon,
+104,Cubone,Ground,,"105,105-Alolan"
 105,Marowak,Ground,,
-105-Alolan Marowak,Marowak-Alolan Marowak,Fire,Ghost,
+105-Alolan,Marowak-Alolan,Fire,Ghost,
 236,Tyrogue,Fighting,,"106,107,237"
 106,Hitmonlee,Fighting,,
 107,Hitmonchan,Fighting,,
@@ -646,10 +646,9 @@
 740,Crabominable,Fighting,Ice,
 742,Cutiefly,Bug,Fairy,743
 743,Ribombee,Bug,Fairy,
-744,Rockruff,Rock,,"745-Midday Form,745-Midnight Form"
+744,Rockruff,Rock,,"745-Midday Form,745-Midnight Form,745-Dusk Form"
 745-Midday Form,Lycanroc-Midday Form,Rock,,
 745-Midnight Form,Lycanroc-Midnight Form,Rock,,
-744-Own Tempo Rockruff,Rockruff-Own Tempo Rockruff,Rock,,745-Dusk Form
 745-Dusk Form,Lycanroc-Dusk Form,Rock,,
 747,Mareanie,Poison,Water,748
 748,Toxapex,Poison,Water,
